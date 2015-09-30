@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android" id="cordova-plugin-remotecommand" version="1.0.0">
+
+    <name>RemoteCommand</name>
+    <description>Cordova RemoteCommand Plugin</description>
+    <license>MIT</license>
+    <keywords>cordova,media,lockscreen,commandcenter,command,MPRemoteComman</keywords>
+    <repo>https://github.com/Muntligt/cordova-plugin-nowplaying.git</repo>
+    <issue>https://github.com/Muntligt/cordova-plugin-nowplaying/issues</issue>
+
+    <engines>
+        <engine name="cordova" version=">=3.4.0"/>
+    </engines>
+
+    <js-module src="www/RemoteCommand.js" name="RemoteCommand">
+        <clobbers target="window.RemoteCommand" />
+    </js-module>
+
+    <!-- ios -->
+    <platform name="ios">
+        <config-file target="config.xml" parent="/*">
+            <feature name="RemoteCommand">
+                <param name="ios-package" value="MRemoteCommand" />
+            </feature>
+        </config-file>
+        <header-file src="src/ios/MRemoteCommand.h" />
+        <source-file src="src/ios/MRemoteCommand.m" />
+    </platform>
+
+</plugin>
