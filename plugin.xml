@@ -32,5 +32,5 @@
         <js-module src="src/browser/MRemoteCommand.js" name="MRemoteCommand">
             <clobbers target="window.RemoteCommand" />
         </js-module>
-
+    </platform>
 </plugin>
