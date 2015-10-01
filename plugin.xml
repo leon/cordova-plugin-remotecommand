@@ -27,4 +27,10 @@
         <source-file src="src/ios/MRemoteCommand.m" />
     </platform>
 
+    <!-- browser -->
+    <platform name="browser">
+        <js-module src="src/browser/MRemoteCommand.js" name="MRemoteCommand">
+            <clobbers target="window.RemoteCommand" />
+        </js-module>
+
 </plugin>

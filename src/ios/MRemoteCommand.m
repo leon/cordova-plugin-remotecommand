@@ -2,10 +2,38 @@
 
 @implementation MRemoteCommand
 
+@synthesize callbackId;
+
 - (void)pluginInitialize
 {
 	NSLog(@"RemoteCommand plugin init.");
+
+    // Register all available commands
+
+    MPRemoteCommandCenter *commandCenter = [MPRemoteCommandCenter sharedCommandCenter];
+
+    [commandCenter.pauseCommand addTarget:self action:@selector(onPause:)];
+    [commandCenter.playCommand addTarget:self action:@selector(onPlay:)];
+    [commandCenter.stopCommand addTarget:self action:@selector(onStop:)];
+    [commandCenter.togglePlayPauseCommand addTarget:self action:@selector(onTogglePlayPause:)];
+    [commandCenter.enableLanguageOptionCommand addTarget:self action:@selector(onEnableLanguageOption:)];
+    [commandCenter.disableLanguageOptionCommand addTarget:self action:@selector(onDisableLanguageOption:)];
+    [commandCenter.nextTrackCommand addTarget:self action:@selector(onNextTrack:)];
+    [commandCenter.previousTrackCommand addTarget:self action:@selector(onPreviousTrack:)];
+    [commandCenter.seekForwardCommand addTarget:self action:@selector(onSeekForward:)];
+    [commandCenter.seekBackwardCommand addTarget:self action:@selector(onSeekBackward:)];
 }
+
+- (void)onPause:(MPRemoteCommandHandlerStatus*)event { [self sendEvent:@"pause"]; }
+- (void)onPlay:(MPRemoteCommandHandlerStatus*)event { [self sendEvent:@"play"]; }
+- (void)onStop:(MPRemoteCommandHandlerStatus*)event { [self sendEvent:@"stop"]; }
+- (void)onTogglePlayPause:(MPRemoteCommandHandlerStatus*)event { [self sendEvent:@"togglePlayPause"]; }
+- (void)onEnableLanguageOption:(MPRemoteCommandHandlerStatus*)event { [self sendEvent:@"enableLanguageOption"]; }
+- (void)onDisableLanguageOption:(MPRemoteCommandHandlerStatus*)event { [self sendEvent:@"disableLanguageOption"]; }
+- (void)onNextTrack:(MPRemoteCommandHandlerStatus*)event { [self sendEvent:@"nextTrack"]; }
+- (void)onPreviousTrack:(MPRemoteCommandHandlerStatus*)event { [self sendEvent:@"previousTrack"]; }
+- (void)onSeekForward:(MPRemoteCommandHandlerStatus*)event { [self sendEvent:@"seekForward"]; }
+- (void)onSeekBackward:(MPRemoteCommandHandlerStatus*)event { [self sendEvent:@"seekBackward"]; }
 
 /**
  * Will set now playing info based on what keys are sent into method
@@ -43,61 +71,27 @@
 /**
  * Start listening for commands
  */
-- (void)onCommand: (CDVInvokedUrlCommand*)command
+- (void)addEventListener: (CDVInvokedUrlCommand*)command
 {
-	MPRemoteCommandCenter *commandCenter = [MPRemoteCommandCenter sharedCommandCenter];
-
-    //[commandCenter.pauseCommand addTarget:self action:@selector(onPlayCommand:)]
-
-    [commandCenter.pauseCommand addTargetWithHandler:^MPRemoteCommandHandlerStatus(MPRemoteCommandEvent *event) {
-        [self sendEvent:@"pause" :command.callbackId];
-        return MPRemoteCommandHandlerStatusSuccess;
-    }];
-    [commandCenter.pauseCommand addTargetWithHandler:^MPRemoteCommandHandlerStatus(MPRemoteCommandEvent *event) {
-        [self sendEvent:@"pause" :command.callbackId];
-        return MPRemoteCommandHandlerStatusSuccess;
-	}];
-    [commandCenter.playCommand addTargetWithHandler:^MPRemoteCommandHandlerStatus(MPRemoteCommandEvent *event) {
-		[self sendEvent:@"play" :command.callbackId];
-        return MPRemoteCommandHandlerStatusSuccess;
-	}];
-    [commandCenter.stopCommand addTargetWithHandler:^MPRemoteCommandHandlerStatus(MPRemoteCommandEvent *event) {
-		[self sendEvent:@"stop" :command.callbackId];
-        return MPRemoteCommandHandlerStatusSuccess;
-	}];
-    [commandCenter.togglePlayPauseCommand addTargetWithHandler:^MPRemoteCommandHandlerStatus(MPRemoteCommandEvent *event) {
-		[self sendEvent:@"togglePlayPause" :command.callbackId];
-        return MPRemoteCommandHandlerStatusSuccess;
-	}];
-    [commandCenter.enableLanguageOptionCommand addTargetWithHandler:^MPRemoteCommandHandlerStatus(MPRemoteCommandEvent *event) {
-		[self sendEvent:@"enableLanguageOption" :command.callbackId];
-        return MPRemoteCommandHandlerStatusSuccess;
-	}];
-    [commandCenter.disableLanguageOptionCommand addTargetWithHandler:^MPRemoteCommandHandlerStatus(MPRemoteCommandEvent *event) {
-		[self sendEvent:@"disableLanguageOption" :command.callbackId];
-        return MPRemoteCommandHandlerStatusSuccess;
-	}];
-    [commandCenter.nextTrackCommand addTargetWithHandler:^MPRemoteCommandHandlerStatus(MPRemoteCommandEvent *event) {
-		[self sendEvent:@"nextTrack" :command.callbackId];
-        return MPRemoteCommandHandlerStatusSuccess;
-	}];
-    [commandCenter.previousTrackCommand addTargetWithHandler:^MPRemoteCommandHandlerStatus(MPRemoteCommandEvent *event) {
-		[self sendEvent:@"previousTrack" :command.callbackId];
-        return MPRemoteCommandHandlerStatusSuccess;
-	}];
-    [commandCenter.seekForwardCommand addTargetWithHandler:^MPRemoteCommandHandlerStatus(MPRemoteCommandEvent *event) {
-		[self sendEvent:@"seekForward" :command.callbackId];
-        return MPRemoteCommandHandlerStatusSuccess;
-	}];
-    [commandCenter.seekBackwardCommand addTargetWithHandler:^MPRemoteCommandHandlerStatus(MPRemoteCommandEvent *event) {
-		[self sendEvent:@"seekBackward" :command.callbackId];
-        return MPRemoteCommandHandlerStatusSuccess;
-	}];
+    self.callbackId = command.callbackId;
 }
 
-- (void)sendEvent:(NSString*)event :(NSString*)callbackId {
-	CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:event];
-	[self.commandDelegate sendPluginResult:pluginResult callbackId:callbackId];
+- (void)removeEventListener: (CDVInvokedUrlCommand*)command
+{
+    self.callbackId = nil;
+}
+
+/**
+ * Send events if there is a registered event listener
+ */
+- (void)sendEvent:(NSString*)event
+{
+    NSLog(@"RemoteCommand: %@", event);
+
+    if (self.callbackId != nil) {
+        CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:event];
+        [self.commandDelegate sendPluginResult:pluginResult callbackId:self.callbackId];
+    }
 }
 
 @end
