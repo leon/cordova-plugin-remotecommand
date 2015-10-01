@@ -1,5 +1,3 @@
-var argscheck = require('cordova/argscheck');
-
 var RemoteCommand = {
 	/**
 	 *  Enable or disable the different Remote Commands
@@ -17,7 +15,6 @@ var RemoteCommand = {
 	 *	seekBackward
 	*/
 	enabled: function (command, isEnabled) {
-		argscheck.checkArgs('sb', 'RemoteCommand', arguments);
 		cordova.exec(success, fail, 'RemoteCommand', 'enabled', [command, isEnabled]);
 	},
 
