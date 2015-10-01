@@ -54,9 +54,18 @@ var RemoteCommand = {
 
 // The recieving event handler
 RemoteCommand.onCommand = function () {
+	var allArgs = Array.prototype.slice.call(arguments);
 	var args = Array.prototype.slice.call(arguments);
   var command = args.shift();
 
+  console.log('onCommand', command, args);
+
+  // Call special 'command' handlers which calls has the command as the first parameter
+  for (var i = 0, length = RemoteCommand.handlers['command'].length; i < length; i++) {
+    RemoteCommand.handlers['command'][i].apply(undefined, allArgs);
+  }
+
+  // Call individual command handlers if there are any
 	if (!RemoteCommand.handlers.hasOwnProperty(command)) {
 		return;
   }
@@ -64,14 +73,12 @@ RemoteCommand.onCommand = function () {
   for (var i = 0, length = RemoteCommand.handlers[command].length; i < length; i++) {
     RemoteCommand.handlers[command][i].apply(undefined, args);
   }
-
-  // The catch all event that calls with the event name also
-  for (var i = 0, length = RemoteCommand.handlers['command'].length; i < length; i++) {
-    RemoteCommand.handlers['command'][i].apply(undefined, args.unshift(command));
-  }
 };
 
 // Initialize event and start listening
-cordova.exec(RemoteCommand.onCommand, null, 'RemoteCommand', 'init');
+document.addEventListener('deviceready', function () {
+	cordova.exec(RemoteCommand.onCommand, null, 'RemoteCommand', 'init');
+}, false);
+
 
 module.exports = RemoteCommand;
