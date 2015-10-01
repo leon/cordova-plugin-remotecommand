@@ -21,7 +21,11 @@ var RemoteCommand = {
 		cordova.exec(success, fail, 'RemoteCommand', 'enabled', [command, isEnabled]);
 	},
 
-	onCommand: function (onCommandFunction) {
+	/**
+	 * Will start listening for commands and publishing them to the onCommandCallback
+	 * onCommand(function (event) { console.log('event', event); });
+	 */
+	onCommand: function (onCommandCallback) {
 		cordova.exec(onCommandFunction, null, 'RemoteCommand', 'onCommand');
 	}
 };

@@ -1,4 +1,4 @@
-#import "MNowPlaying.h"
+#import "MRemoteCommand.h"
 
 @implementation MRemoteCommand
 
@@ -14,83 +14,88 @@
 {
 	MPRemoteCommandCenter *remoteCenter = [MPRemoteCommandCenter sharedCommandCenter];
 
-	NSString *command = [command.arguments objectAtIndex:0];
-	BOOL *enabled = [command.arguments objectAtIndex:1];
+	NSString *cmd = [command.arguments objectAtIndex:0];
+    bool enabled = [[command.arguments objectAtIndex:1] boolValue];
 
-	switch (command) {
-		case "@pause":
-			remoteCenter.pauseCommand.enabled = enabled;
-			break;
-		case "@play":
-			remoteCenter.playCommand.enabled = enabled;
-			break;
-		case "@stop":
-			remoteCenter.stopCommand.enabled = enabled;
-			break;
-		case "@togglePlayPause":
-			remoteCenter.togglePlayPauseCommand.enabled = enabled;
-			break;
-		case "@enableLanguageOption":
-			remoteCenter.enableLanguageOptionCommand.enabled = enabled;
-			break;
-		case "@disableLanguageOption":
-			remoteCenter.disableLanguageOptionCommand.enabled = enabled;
-			break;
-		case "@nextTrack":
-			remoteCenter.nextTrackCommand.enabled = enabled;
-			break;
-		case "@previousTrack":
-			remoteCenter.previousTrackCommand.enabled = enabled;
-			break;
-		case "@seekForward":
-			remoteCenter.seekForwardCommand.enabled = enabled;
-			break;
-		case "@seekBackward":
-			remoteCenter.seekBackwardCommand.enabled = enabled;
-			break;
-	}
+    if ([cmd isEqual: @"@pause"]) {
+        remoteCenter.pauseCommand.enabled = enabled;
+    } else if ([cmd isEqual: @"play"]) {
+        remoteCenter.playCommand.enabled = enabled;
+    } else if ([cmd isEqual: @"stop"]) {
+        remoteCenter.stopCommand.enabled = enabled;
+    } else if ([cmd isEqual: @"togglePlayPause"]) {
+        remoteCenter.togglePlayPauseCommand.enabled = enabled;
+    } else if ([cmd isEqual: @"enableLanguageOption"]) {
+        remoteCenter.enableLanguageOptionCommand.enabled = enabled;
+    } else if ([cmd isEqual: @"disableLanguageOption"]) {
+        remoteCenter.disableLanguageOptionCommand.enabled = enabled;
+    } else if ([cmd isEqual: @"nextTrack"]) {
+        remoteCenter.nextTrackCommand.enabled = enabled;
+    } else if ([cmd isEqual: @"previousTrack"]) {
+        remoteCenter.previousTrackCommand.enabled = enabled;
+    } else if ([cmd isEqual: @"seekForward"]) {
+        remoteCenter.seekForwardCommand.enabled = enabled;
+    } else if ([cmd isEqual: @"seekBackward"]) {
+        remoteCenter.seekBackwardCommand.enabled = enabled;
+    }
 }
 
 /**
  * Start listening for commands
  */
-- (void)onCommand(CDVInvokedUrlCommand*)command
+- (void)onCommand: (CDVInvokedUrlCommand*)command
 {
-	MPRemoteCommandCenter *remoteCenter = [MPRemoteCommandCenter sharedCommandCenter];
+	MPRemoteCommandCenter *commandCenter = [MPRemoteCommandCenter sharedCommandCenter];
 
-	[commandCenter.pauseCommand addTargetUsingBlock:^(MPRemoteCommandEvent *event) {
-		[self sendEvent:@"pause" toCallbackId:command.callbackId];
-	}
-	[commandCenter.playCommand addTargetUsingBlock:^(MPRemoteCommandEvent *event) {
-		[self sendEvent:@"play" toCallbackId:command.callbackId];
-	}
-	[commandCenter.stopCommand addTargetUsingBlock:^(MPRemoteCommandEvent *event) {
-		[self sendEvent:@"stop" toCallbackId:command.callbackId];
-	}
-	[commandCenter.togglePlayPauseCommand addTargetUsingBlock:^(MPRemoteCommandEvent *event) {
-		[self sendEvent:@"togglePlayPause" toCallbackId:command.callbackId];
-	}
-	[commandCenter.enableLanguageOptionCommand addTargetUsingBlock:^(MPRemoteCommandEvent *event) {
-		[self sendEvent:@"enableLanguageOption" toCallbackId:command.callbackId];
-	}
-	[commandCenter.disableLanguageOptionCommand addTargetUsingBlock:^(MPRemoteCommandEvent *event) {
-		[self sendEvent:@"disableLanguageOption" toCallbackId:command.callbackId];
-	}
-	[commandCenter.nextTrackCommand addTargetUsingBlock:^(MPRemoteCommandEvent *event) {
-		[self sendEvent:@"nextTrack" toCallbackId:command.callbackId];
-	}
-	[commandCenter.previousTrackCommand addTargetUsingBlock:^(MPRemoteCommandEvent *event) {
-		[self sendEvent:@"previousTrack" toCallbackId:command.callbackId];
-	}
-	[commandCenter.seekForwardCommand addTargetUsingBlock:^(MPRemoteCommandEvent *event) {
-		[self sendEvent:@"seekForward" toCallbackId:command.callbackId];
-	}
-	[commandCenter.seekBackwardCommand addTargetUsingBlock:^(MPRemoteCommandEvent *event) {
-		[self sendEvent:@"seekBackward" toCallbackId:command.callbackId];
-	}
+    //[commandCenter.pauseCommand addTarget:self action:@selector(onPlayCommand:)]
+
+    [commandCenter.pauseCommand addTargetWithHandler:^MPRemoteCommandHandlerStatus(MPRemoteCommandEvent *event) {
+        [self sendEvent:@"pause" :command.callbackId];
+        return MPRemoteCommandHandlerStatusSuccess;
+    }];
+    [commandCenter.pauseCommand addTargetWithHandler:^MPRemoteCommandHandlerStatus(MPRemoteCommandEvent *event) {
+        [self sendEvent:@"pause" :command.callbackId];
+        return MPRemoteCommandHandlerStatusSuccess;
+	}];
+    [commandCenter.playCommand addTargetWithHandler:^MPRemoteCommandHandlerStatus(MPRemoteCommandEvent *event) {
+		[self sendEvent:@"play" :command.callbackId];
+        return MPRemoteCommandHandlerStatusSuccess;
+	}];
+    [commandCenter.stopCommand addTargetWithHandler:^MPRemoteCommandHandlerStatus(MPRemoteCommandEvent *event) {
+		[self sendEvent:@"stop" :command.callbackId];
+        return MPRemoteCommandHandlerStatusSuccess;
+	}];
+    [commandCenter.togglePlayPauseCommand addTargetWithHandler:^MPRemoteCommandHandlerStatus(MPRemoteCommandEvent *event) {
+		[self sendEvent:@"togglePlayPause" :command.callbackId];
+        return MPRemoteCommandHandlerStatusSuccess;
+	}];
+    [commandCenter.enableLanguageOptionCommand addTargetWithHandler:^MPRemoteCommandHandlerStatus(MPRemoteCommandEvent *event) {
+		[self sendEvent:@"enableLanguageOption" :command.callbackId];
+        return MPRemoteCommandHandlerStatusSuccess;
+	}];
+    [commandCenter.disableLanguageOptionCommand addTargetWithHandler:^MPRemoteCommandHandlerStatus(MPRemoteCommandEvent *event) {
+		[self sendEvent:@"disableLanguageOption" :command.callbackId];
+        return MPRemoteCommandHandlerStatusSuccess;
+	}];
+    [commandCenter.nextTrackCommand addTargetWithHandler:^MPRemoteCommandHandlerStatus(MPRemoteCommandEvent *event) {
+		[self sendEvent:@"nextTrack" :command.callbackId];
+        return MPRemoteCommandHandlerStatusSuccess;
+	}];
+    [commandCenter.previousTrackCommand addTargetWithHandler:^MPRemoteCommandHandlerStatus(MPRemoteCommandEvent *event) {
+		[self sendEvent:@"previousTrack" :command.callbackId];
+        return MPRemoteCommandHandlerStatusSuccess;
+	}];
+    [commandCenter.seekForwardCommand addTargetWithHandler:^MPRemoteCommandHandlerStatus(MPRemoteCommandEvent *event) {
+		[self sendEvent:@"seekForward" :command.callbackId];
+        return MPRemoteCommandHandlerStatusSuccess;
+	}];
+    [commandCenter.seekBackwardCommand addTargetWithHandler:^MPRemoteCommandHandlerStatus(MPRemoteCommandEvent *event) {
+		[self sendEvent:@"seekBackward" :command.callbackId];
+        return MPRemoteCommandHandlerStatusSuccess;
+	}];
 }
 
-- (void)sendEvent:(NSString *event) toCallbackId:(NSString*)callbackId {
+- (void)sendEvent:(NSString*)event :(NSString*)callbackId {
 	CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:event];
 	[self.commandDelegate sendPluginResult:pluginResult callbackId:callbackId];
 }
