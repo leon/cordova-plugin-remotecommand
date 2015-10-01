@@ -23,15 +23,15 @@ var RemoteCommand = {
 	 * !!! There can be only one event listener per app
 	 * addEventListener(function (event) { console.log('event', event); });
 	 */
-	addEventListener: function (callback) {
-		console.log('RemoteCommand addEventListener');
+	on: function (command, callback) {
+		console.log('RemoteCommand on', command);
 	},
 
 	/**
 	 * Will remove the current event listener
 	 */
-	removeEventListener: function () {
-		console.log('RemoteCommand removeEventListener');
+	off: function (command, callback) {
+		console.log('RemoteCommand off', command);
 	}
 };
 

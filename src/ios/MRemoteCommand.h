@@ -8,7 +8,6 @@
 @property (nonatomic, copy) NSString *callbackId;
 
 - (void)enabled:(CDVInvokedUrlCommand*)command;
-- (void)addEventListener:(CDVInvokedUrlCommand*)command;
-- (void)removeEventListener:(CDVInvokedUrlCommand*)command;
+- (void)init:(CDVInvokedUrlCommand*)command;
 
 @end

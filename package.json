@@ -11,7 +11,9 @@
     "url": "git+https://github.com/Muntligt/cordova-plugin-remotecommand.git"
   },
   "keywords": [
+    "ecosystem:cordova",
     "cordova",
+    "cordova-ios",
     "media",
     "lockscreen",
     "commandcenter",

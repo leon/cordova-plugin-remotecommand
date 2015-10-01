@@ -16,9 +16,26 @@ Then from javascript you will be able to call:
 RemoteCommand.enabled('nextTrack', false);
 RemoteCommand.enabled('previousTrack', false);
 
-// Start listening to remote commands
-RemoteCommand.onCommand(function (command) {
+// Start listening to all the remote commands
+RemoteCommand.on('command', function (command) {
 	console.log('command being fired', command);
+	switch(command) {
+		"play":
+			audio.play();
+			break;
+		"pause":
+			audio.pause();
+			break;
+	}
+});
+
+// or listen to them seperatly
+RemoteCommand.on('play', function () {
+	audio.play();
+});
+
+RemoteCommand.on('pause', function () {
+	audio.pause();
 });
 
 ```

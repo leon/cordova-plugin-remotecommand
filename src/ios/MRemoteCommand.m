@@ -35,6 +35,15 @@
 - (void)onSeekForward:(MPRemoteCommandHandlerStatus*)event { [self sendEvent:@"seekForward"]; }
 - (void)onSeekBackward:(MPRemoteCommandHandlerStatus*)event { [self sendEvent:@"seekBackward"]; }
 
+
+/**
+ * Start listening for commands
+ */
+- (void)init: (CDVInvokedUrlCommand*)command
+{
+    self.callbackId = command.callbackId;
+}
+
 /**
  * Will set now playing info based on what keys are sent into method
  */
@@ -44,6 +53,8 @@
 
 	NSString *cmd = [command.arguments objectAtIndex:0];
     bool enabled = [[command.arguments objectAtIndex:1] boolValue];
+
+    NSLog(@"RemoteCommand enabled: %@ - %d", cmd, enabled);
 
     if ([cmd isEqual: @"@pause"]) {
         remoteCenter.pauseCommand.enabled = enabled;
@@ -69,27 +80,15 @@
 }
 
 /**
- * Start listening for commands
- */
-- (void)addEventListener: (CDVInvokedUrlCommand*)command
-{
-    self.callbackId = command.callbackId;
-}
-
-- (void)removeEventListener: (CDVInvokedUrlCommand*)command
-{
-    self.callbackId = nil;
-}
-
-/**
  * Send events if there is a registered event listener
  */
 - (void)sendEvent:(NSString*)event
 {
-    NSLog(@"RemoteCommand: %@", event);
+    NSLog(@"RemoteCommand: %@ calling: %@", event, self.callbackId);
 
     if (self.callbackId != nil) {
         CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:event];
+        [pluginResult setKeepCallback:[NSNumber numberWithBool:YES]];
         [self.commandDelegate sendPluginResult:pluginResult callbackId:self.callbackId];
     }
 }
