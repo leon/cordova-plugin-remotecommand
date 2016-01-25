@@ -1,6 +1,6 @@
 {
   "name": "cordova-plugin-remotecommand",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Cordova Plugin to listen to all remote commands such as play, pause, nextTrack...",
   "main": "src/www/RemoteCommand.js",
   "scripts": {

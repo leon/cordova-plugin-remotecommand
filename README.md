@@ -4,8 +4,6 @@
 cordova plugin add cordova-plugin-remotecommand
 ```
 
-Requires linking of `MediaPlayer.framework` from XCode project settings under `General` -> `Linked Framework and Libraries`
-
 Then from javascript you will be able to call:
 
 > More info at https://developer.apple.com/library/prerelease/ios/documentation/MediaPlayer/Reference/MPRemoteCommand_Ref/index.html#//apple_ref/occ/cl/MPRemoteCommand
@@ -37,5 +35,17 @@ RemoteCommand.on('play', function () {
 RemoteCommand.on('pause', function () {
 	audio.pause();
 });
+
+// Available events are:
+// *  pause
+// *  play
+// *  stop
+// *  togglePlayPause
+// *  enableLanguageOption
+// *  disableLanguageOption
+// *  nextTrack
+// *  previousTrack
+// *  seekForward
+// *  seekBackward
 
 ```
