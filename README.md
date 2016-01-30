@@ -1,3 +1,10 @@
+# Info
+This plugin allows you to control all the remote commands in iOS such as play pause from the lock scree, command center or headset.
+
+This project has a sibling project that allows you to control what is displayed in the now playing info shown in the lock screen and in the command center. Check it out!
+
+https://github.com/Muntligt/cordova-plugin-nowplaying
+
 # Install
 
 ```bash
