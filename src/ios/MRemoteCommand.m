@@ -57,7 +57,7 @@
 
 	NSLog(@"RemoteCommand enabled: %@ - %d", cmd, enabled);
 
-	if ([cmd isEqual: @"@pause"]) {
+	if ([cmd isEqual: @"pause"]) {
 		remoteCenter.pauseCommand.enabled = enabled;
 	} else if ([cmd isEqual: @"play"]) {
 		remoteCenter.playCommand.enabled = enabled;
