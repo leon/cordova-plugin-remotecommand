@@ -1,6 +1,6 @@
 {
   "name": "cordova-plugin-remotecommand",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Cordova Plugin to listen to all remote commands such as play, pause, nextTrack...",
   "main": "src/www/RemoteCommand.js",
   "scripts": {
@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Muntligt/cordova-plugin-remotecommand.git"
+    "url": "git+https://github.com/leon/cordova-plugin-remotecommand.git"
   },
   "keywords": [
     "ecosystem:cordova",
@@ -23,7 +23,7 @@
   "author": "Leon Radley (leon)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Muntligt/cordova-plugin-remotecommand/issues"
+    "url": "https://github.com/leon/cordova-plugin-remotecommand/issues"
   },
-  "homepage": "https://github.com/Muntligt/cordova-plugin-remotecommand#readme"
+  "homepage": "https://github.com/leon/cordova-plugin-remotecommand#readme"
 }
